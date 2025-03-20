@@ -5,17 +5,18 @@ const router = express.Router();
 
 // إضافة مهمة جديدة
 router.post('/task', (req, res) => {
-    const { date, check_in, check_out, sit_name, description } = req.body;
-
-    const sql = "INSERT INTO tasks (date, check_in, check_out, sit_name, description) VALUES (?, ?, ?, ?, ?)";
+    const { name, email, date, check_in, check_out, sit_name, description } = req.body;
     
-    con.query(sql, [date, check_in, check_out, sit_name, description], (err, result) => {
+    const sql = "INSERT INTO tasks (name, email, date, check_in, check_out, sit_name, description) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    
+    con.query(sql, [name, email, date, check_in, check_out, sit_name, description], (err, result) => {
         if (err) {
             return res.json({ Status: false, Error: "Database error" });
         }
         return res.json({ Status: true, Message: "Task added successfully!" });
     });
 });
+
 
 // استرجاع المهام
 router.get('/tasks', (req, res) => {
@@ -30,16 +31,17 @@ router.get('/tasks', (req, res) => {
 });
 // تحديث مهمة معينة
 router.put('/task/:id', (req, res) => {
-    const { date, check_in, check_out, sit_name, description } = req.body;
-    const sql = "UPDATE tasks SET date = ?, check_in = ?, check_out = ?, sit_name = ?, description = ? WHERE id = ?";
+    const { name, email, date, check_in, check_out, sit_name, description } = req.body;
+    const sql = "UPDATE tasks SET name = ?, email = ?, date = ?, check_in = ?, check_out = ?, sit_name = ?, description = ? WHERE id = ?";
     
-    con.query(sql, [date, check_in, check_out, sit_name, description, req.params.id], (err, result) => {
+    con.query(sql, [name, email, date, check_in, check_out, sit_name, description, req.params.id], (err, result) => {
         if (err) {
             return res.json({ Status: false, Error: "Database error" });
         }
         return res.json({ Status: true, Message: "Task updated successfully!" });
     });
 });
+
 
 // حذف مهمة معينة
 router.delete('/task/:id', (req, res) => {
